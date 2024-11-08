@@ -16,7 +16,7 @@ DB_PASSWORD = os.getenv("DB_PASSWORD")
 
 def load_to_postgres(df):
     engine = create_engine(f"postgresql://{DB_USER}:{DB_PASSWORD}@localhost:5432/spotify_db")
-    df.to_sql('spotify_tracks', engine, if_exists='append', index=False)
+    df.to_sql('spotify_tracks', engine, if_exists='replace', index=False)
 
 def run_etl():
     sp = get_spotify_client()
