@@ -54,19 +54,45 @@ pip install -r requirements.txt
  ```
 2. Crea una base de datos SQL
 ```sql
-CREATE DATABASE spotify_db;
+-- Database: spotify_db
+
+-- DROP DATABASE IF EXISTS spotify_db;
+
+CREATE DATABASE spotify_db
+    WITH
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'Spanish_Colombia.1252'
+    LC_CTYPE = 'Spanish_Colombia.1252'
+    LOCALE_PROVIDER = 'libc'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1
+    IS_TEMPLATE = False;
 ```
 3. Configura las tablas necesarias en PostgreSQL. La tabla principal es `spotify_tracks`, con la estructura siguiente:
+
 ```sql
-CREATE TABLE spotify_tracks ( 
-	track_id VARCHAR PRIMARY KEY, 
-	track_name VARCHAR, 
-	artist_name VARCHAR, 
-	album_name VARCHAR, 
-	played_at TIMESTAMP, 
-	duration_ms INTEGER, 
-	popularity INTEGER 
-);
+-- Table: public.spotify_tracks
+
+-- DROP TABLE IF EXISTS public.spotify_tracks;
+
+CREATE TABLE IF NOT EXISTS public.spotify_tracks
+(
+    track_id character varying COLLATE pg_catalog."default" NOT NULL,
+    track_name character varying(255) COLLATE pg_catalog."default",
+    artist character varying(255) COLLATE pg_catalog."default",
+    played_at timestamp with time zone NOT NULL,
+    album character varying(255) COLLATE pg_catalog."default",
+    duration_ms numeric,
+    popularity integer,
+    duration_min numeric,
+    CONSTRAINT spotify_tracks_pkey PRIMARY KEY (played_at)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.spotify_tracks
+    OWNER to postgres;
 ```
 
 ## Ejecución
@@ -93,9 +119,9 @@ Una vez que los datos estén en la base de datos PostgreSQL, puedes realizar con
 -   Canciones más escuchadas:
     
 ```sql
-    SELECT track_name, artist_name, COUNT(*) as play_count
+    SELECT track_name, artist, COUNT(*) as play_count
     FROM spotify_tracks
-    GROUP BY track_name, artist_name
+    GROUP BY track_name, artist
     ORDER BY play_count DESC
     LIMIT 10;
 ```
@@ -103,9 +129,9 @@ Una vez que los datos estén en la base de datos PostgreSQL, puedes realizar con
 -   Artistas más populares:
     
 ```sql 
-    SELECT artist_name, AVG(popularity) as avg_popularity
+    SELECT artist, AVG(popularity) as avg_popularity
     FROM spotify_tracks
-    GROUP BY artist_name
+    GROUP BY artist
     ORDER BY avg_popularity DESC
     LIMIT 10;
 ```
