@@ -122,6 +122,7 @@ Una vez que los datos estén en la base de datos PostgreSQL, puedes realizar con
 
 ## Estructura del Proyecto
 
+```
 spotify_etl_project/ 
 │ 
 ├── etl.py # Script principal del ETL 
@@ -138,7 +139,11 @@ spotify_etl_project/
 ├── .env # Variables de entorno (credenciales) 
 ├── .gitignore # Archivos a ignorar por Git 
 └── README.md # Descripción del proyecto
+```
 
+## Contribuciones
+
+Las contribuciones son bienvenidas. Por favor, crea un fork del proyecto y envía tus pull requests con mejoras o nuevas funcionalidades.
 
 
 
