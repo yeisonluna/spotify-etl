@@ -1,6 +1,6 @@
 # utils/spotify_api.py
 def get_recently_played(sp):
-    results = sp.current_user_recently_played(limit=50)
+    results = sp.current_user_recently_played(limit=100)
     track_data = []
     for item in results['items']:
         track = item['track']
